@@ -1,0 +1,201 @@
+/* Basic Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Body Styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #e6d3d1;
+    color: #3e3e3e;
+    padding: 20px;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+}
+
+.logo {
+    font-size: 36px;
+    font-weight: bold;
+    color: #b15e61; /* Bolder Turkish Rose */
+}
+
+.logo span {
+    color: #8a9355; /* Bolder Olive Green */
+}
+
+.tagline {
+    font-size: 16px;
+    color: #a67658; /* Sand Brown */
+    font-style: italic;
+}
+
+/* Auth Buttons */
+.auth-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.auth-button {
+    background-color: #8a9355; /* Bolder Olive Green */
+    border: none;
+    border-radius: 25px;
+    color: #ffffff;
+    font-size: 16px;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.auth-button:hover {
+    background-color: #6f7546;
+}
+
+/* Main Content Layout */
+.content-wrapper {
+    display: flex;
+    padding: 20px 50px;
+}
+
+/* Details Section */
+.details {
+    flex: 2;
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    margin-right: 20px;
+}
+
+.details h3 {
+    font-size: 32px;
+    color: #3e3e3e;
+    font-family: 'Georgia', serif;
+    margin-bottom: 15px;
+}
+
+.details p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* Gallery Section */
+.gallery {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.gallery img {
+    width: 200px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Signup Section */
+.signup-section {
+    background-color: #d6c3be; /* Darker Turkish Rose */
+    padding: 45px;
+    text-align: center;
+    border-radius: 20px;
+    margin: 20px 50px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.signup-section h3 {
+    color: #a67658; /* Sand Brown */
+    font-size: 26px;
+    margin-bottom: 12px;
+}
+
+.signup-section button {
+    background-color: #8a9355; /* Bolder Olive Green */
+    color: white;
+    font-size: 16px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.signup-section button:hover {
+    background-color: #6f7546;
+}
+
+/* Contact Section */
+.contact-section {
+    padding: 55px;
+    text-align: center;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    margin-top: 25px;
+}
+
+.contact-section h3 {
+    font-size: 26px;
+    color: #3e3e3e;
+    font-family: 'Georgia', serif;
+    margin-bottom: 25px;
+}
+
+.contact-info p {
+    font-size: 16px;
+    color: #555;
+}
+
+/* Footer */
+footer {
+    padding: 25px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    font-style: italic;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.4s;
+}
+
+.modal.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 35px;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.close-btn {
+    background-color: #e45

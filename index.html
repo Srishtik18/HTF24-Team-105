@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getish Done</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Header with Logo and Tagline -->
+  <div class="header">
+    <div>
+      <div class="logo">Getish <span>Done</span></div>
+      <div class="tagline">get your shit done</div>
+    </div>
+    <div class="auth-buttons">
+      <button class="auth-button" onclick="openModal('signup')">Sign Up</button>
+      <button class="auth-button" onclick="openModal('login')">Login</button>
+    </div>
+  </div>
+
+  <!-- Main Content with Details and Gallery -->
+  <div class="content-wrapper">
+    <div>
+      <!-- Details Section -->
+      <div class="details">
+        <h3>Stay Organized, Stay Productive</h3>
+        <p>Getish Done is your go-to task manager for simplifying your to-do lists, tracking tasks, and achieving productivity goals. From planning daily chores to organizing larger projects, Getish Done has everything you need to keep track of your time and priorities.</p>
+        <p>Our easy-to-use interface is built to help you stay on top of your tasks without the clutter. Customize your lists, set reminders, and tackle each day with focus. Get started today and experience the simplicity of organized productivity!</p>
+      </div>
+    </div>
+
+    <!-- Gallery Section -->
+    <div class="gallery">
+      <img src="https://as2.ftcdn.net/v2/jpg/03/29/47/41/1000_F_329474194_CngVOyGsWkJiw475XUVzWz5UToB7IbWL.jpg" alt="Plan your tasks">
+      <img src="https://www.bluesky.com/cdn/shop/files/149962.jpg?v=1725947186&width=1100" alt="Organize effortlessly">
+    </div>
+  </div>
+
+  <!-- Signup Section -->
+  <div class="signup-section">
+    <h3>Sign Up for Free</h3>
+    <p>Join Getish Done today and start managing your tasks with ease!</p>
+    <button onclick="openModal('signup')">Get Started</button>
+  </div>
+
+  <!-- Contact Section -->
+  <div class="contact-section">
+    <h3>Contact Us</h3>
+    <div class="contact-info">
+      <p>Email: support@getishdone.com</p>
+      <p>Phone: +1-800-555-GET</p>
+      <p>Address: 123 Productivity Lane, Taskville, TX</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2024 Getish Done. All Rights Reserved.
+  </footer>
+
+  <!-- Modals -->
+  <div id="signup-modal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('signup')">&times;</button>
+      <h2>Sign Up</h2>
+      <input type="text" id="signup-username" placeholder="Username">
+      <input type="password" id="signup-password" placeholder="Password">
+      <button onclick="signup()">Sign Up</button>
+    </div>
+  </div>
+
+  <div id="login-modal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('login')">&times;</button>
+      <h2>Login</h2>
+      <input type="text" id="login-username" placeholder="Username">
+      <input type="password" id="login-password" placeholder="Password">
+      <button onclick="login()">Login</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
