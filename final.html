@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List with Notes, Calendar, Spotify, and Stopwatch</title>
+  <style>
+    :root {
+      --background-color: #f2e7e5; /* Light background */
+      --text-color: #4a4a4a; /* Dark text */
+      --highlight-color: #a67658; /* Highlight color */
+      --accent-color: #a3a57a; /* Accent color */
+      --note-bg: #e6d7d0; /* Light note background */
+      --calendar-bg: #ffffff; /* Calendar background */
+      --olive-green: #8C8B5B; /* Olive green */
+      --button-hover: #8b8d6d; /* Button hover color */
+    }
+
+    /* Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: var(--background-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: var(--text-color);
+      padding: 20px;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .login-container, .app-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .app-container {
+      height: calc(100vh - 40px); /* Full height minus padding */
+      gap: 20px;
+      overflow: hidden;
+    }
+
+    /* Left Column */
+    .left-column, .right-column {
+      background-color: #ffffff;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 50%;
+      overflow-y: auto; /* Enable scrolling if content overflows */
+    }
+
+    /* Login Form */
+    .login-form {
+      background-color: var(--note-bg);
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-form input {
+      margin: 10px 0;
+      padding: 10px;
+      border: 2px solid var(--highlight-color);
+      border-radius: 5px;
+      width: 100%;
+    }
+
+    button.login-btn {
+      padding: 10px;
+      background-color: var(--highlight-color);
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
+    }
+
+    button.login-btn:hover {
+      background-color: var(--button-hover);
+    }
+
+    /* Other existing styles (same as before) ... */
+
+    /* Stopwatch Section */
+    .stopwatch-section {
+      width: 100%;
+      padding: 20px;
+      background-color: var(--olive-green);
+      border-radius: 15px;
+      margin-top: 20px;
+      color: white;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .stopwatch {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    button.stopwatch-btn {
+      padding: 10px 20px;
+      background-color: var(--highlight-color);
+      border: none;
+      border-radius: 20px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button.stopwatch-btn:hover {
+      background-color: var(--button-hover);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login Container -->
+  <div class="login-container" id="loginContainer">
+    <div class="login-form">
+      <h2>Login</h2>
+      <input type="text" id="username" placeholder="Username">
+      <input type="password" id="password" placeholder="Password">
+      <button class="login-btn" onclick="login()">Login</button>
+    </div>
+  </div>
+
+  <!-- Main App Container -->
+  <div class="app-container" id="appContainer">
+    
+    <!-- Left Column -->
+    <div class="left-column">
+      <!-- Notes Section -->
+      <div class="notes-section">
+        <h3>Notes</h3>
+        <textarea placeholder="Write down your quick notes..."></textarea>
+      </div>
+
+      <!-- Spotify Section -->
+      <div class="spotify-section">
+        <h3>Spotify Playlist</h3>
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX4dyzvuaRJ0n" width="100%" height="250" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="right-column">
+      <h2>To-Do List</h2>
+      
+      <!-- Calendar -->
+      <div class="calendar-container">
+        <input type="date" id="taskDate" style="width: 100%; padding: 5px; border: none; text-align: center; background: transparent; font-size: 16px;">
+      </div>
+
+      <!-- Task input section -->
+      <div class="input-section">
+        <input type="text" id="taskInput" placeholder="Enter task...">
+        <input type="time" id="taskTime">
+      </div>
+      <button class="add-btn" onclick="addTask()">Add Task</button>
+      
+      <!-- Task list -->
+      <ul id="taskList"></ul>
+      
+      <!-- Stopwatch Section -->
+      <div class="stopwatch-section">
+        <h3>Stopwatch</h3>
+        <div class="stopwatch" id="stopwatchDisplay">00:00:00</div>
+        <button class="stopwatch-btn" onclick="startStopwatch()">Start</button>
+        <button class="stopwatch-btn" onclick="stopStopwatch()">Stop</button>
+        <button class="stopwatch-btn" onclick="resetStopwatch()">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let stopwatchInterval;
+    let stopwatchSeconds = 0;
+
+    // Function to handle login
+    function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      // Simple login validation (this can be improved)
+      if (username && password) {
+        document.getElementById('loginContainer').style.display = 'none';
+        document.getElementById('appContainer').style.display = 'flex';
+      } else {
+        alert('Please enter both username and password.');
+      }
+    }
+
+    function startStopwatch() {
+      clearInterval(stopwatchInterval);
+      stopwatchInterval = setInterval(() => {
+        stopwatchSeconds++;
+        const hours = Math.floor(stopwatchSeconds / 3600).toString().padStart(2, '0');
+        const minutes = Math.floor((stopwatchSeconds % 3600) / 60).toString().padStart(2, '0');
+        const seconds = (stopwatchSeconds % 60).toString().padStart(2, '0');
+        document.getElementById('stopwatchDisplay').innerText = `${hours}:${minutes}:${seconds}`;
+      }, 1000);
+    }
+
+    function stopStopwatch() {
+      clearInterval(stopwatchInterval);
+    }
+
+    function resetStopwatch() {
+      stopStopwatch();
+      stopwatchSeconds = 0;
+      document.getElementById('stopwatchDisplay').innerText = '00:00:00';
+    }
+
+    function addTask() {
+      const taskInput = document.getElementById('taskInput').value;
+      const taskTime = document.getElementById('taskTime').value;
+      const taskDate = document.getElementById('taskDate').value;
+
+      if (taskInput.trim() === '') {
+        alert('Please enter a task!');
+        return;
+      }
+
+      const li = document.createElement('li');
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.className = 'checkbox';
+      checkbox.onclick = () => {
+        if (checkbox.checked) {
+          taskText.classList.add('completed');
+        } else {
+          taskText.classList.remove('completed');
+        }
+      };
+
+      const taskText = document.createElement('span');
+      taskText.className = 'task-text';
+      taskText.textContent = `${taskInput} - ${taskDate} ${taskTime ? '(' + taskTime + ')' : ''}`;
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = '❌';
+      deleteBtn.className = 'delete-btn';
+      deleteBtn.onclick = () => li.remove();
+
+      li.appendChild(checkbox);
+      li.appendChild(taskText);
+      li.appendChild(deleteBtn);
+      document.getElementById('taskList').appendChild(li);
+
+      document.getElementById('taskInput').value = '';
+      document.getElementById('taskTime').value = '';
+      document.getElementById('taskDate').value = '';
+    }
+  </script>
+</body>
+</html>

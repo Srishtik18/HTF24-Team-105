@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List with Notes, Calendar, Spotify, and Stopwatch</title>
+  <style>
+    :root {
+      --background-color: #f2e7e5; /* Light background */
+      --text-color: #4a4a4a; /* Dark text */
+      --highlight-color: #a67658; /* Highlight color */
+      --accent-color: #a3a57a; /* Accent color */
+      --note-bg: #e6d7d0; /* Light note background */
+      --calendar-bg: #ffffff; /* Calendar background */
+      --olive-green: #8C8B5B; /* Olive green */
+      --button-hover: #8b8d6d; /* Button hover color */
+    }
+
+    /* Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: var(--background-color);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      color: var(--text-color);
+      padding: 20px;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .app-container {
+      display: flex;
+      width: 100%;
+      height: calc(100vh - 40px); /* Full height minus padding */
+      gap: 20px;
+      overflow: hidden;
+    }
+
+    /* Left Column */
+    .left-column, .right-column {
+      background-color: #ffffff;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 50%;
+      overflow-y: auto; /* Enable scrolling if content overflows */
+    }
+
+    /* Notes section */
+    .notes-section {
+      background-color: var(--note-bg);
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .notes-section h3 {
+      color: var(--highlight-color);
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .notes-section textarea {
+      width: 100%;
+      height: 120px;
+      border: 2px solid var(--accent-color);
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 14px;
+      resize: none;
+      outline: none;
+    }
+
+    /* Spotify embed */
+    .spotify-section {
+      margin-top: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      background-color: var(--note-bg);
+    }
+
+    /* Calendar styling */
+    .calendar-container {
+      background-color: var(--calendar-bg);
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* To-Do List */
+    h2 {
+      color: var(--highlight-color);
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .input-section {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"] {
+      width: 70%;
+      padding: 10px;
+      border: 2px solid var(--highlight-color);
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input[type="time"] {
+      width: 25%;
+      padding: 10px;
+      border: 2px solid var(--highlight-color);
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    button.add-btn {
+      width: 100%;
+      padding: 10px;
+      background-color: var(--highlight-color);
+      border: none;
+      border-radius: 20px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-bottom: 20px;
+    }
+
+    button.add-btn:hover {
+      background-color: var(--button-hover);
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    .checkbox {
+      appearance: none;
+      height: 18px;
+      width: 18px;
+      border: 2px solid var(--accent-color);
+      border-radius: 50%;
+      margin-right: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .checkbox:checked {
+      background-color: var(--highlight-color);
+    }
+
+    .task-text {
+      flex-grow: 1;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      color: #888;
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      font-size: 16px;
+      color: #e74c3c;
+      cursor: pointer;
+    }
+
+    /* Stopwatch Section */
+    .stopwatch-section {
+      width: 100%;
+      padding: 20px;
+      background-color: var(--olive-green);
+      border-radius: 15px;
+      margin-top: 20px;
+      color: white;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .stopwatch {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    button.stopwatch-btn {
+      padding: 10px 20px;
+      background-color: var(--highlight-color);
+      border: none;
+      border-radius: 20px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button.stopwatch-btn:hover {
+      background-color: var(--button-hover);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Left Column -->
+    <div class="left-column">
+      <!-- Notes Section -->
+      <div class="notes-section">
+        <h3>Notes</h3>
+        <textarea placeholder="Write down your quick notes..."></textarea>
+      </div>
+
+      <!-- Spotify Section -->
+      <div class="spotify-section">
+        <h3>Spotify Playlist</h3>
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX4dyzvuaRJ0n" width="100%" height="250" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="right-column">
+      <h2>To-Do List</h2>
+      
+      <!-- Calendar -->
+      <div class="calendar-container">
+        <input type="date" id="taskDate" style="width: 100%; padding: 5px; border: none; text-align: center; background: transparent; font-size: 16px;">
+      </div>
+
+      <!-- Task input section -->
+      <div class="input-section">
+        <input type="text" id="taskInput" placeholder="Enter task...">
+        <input type="time" id="taskTime">
+      </div>
+      <button class="add-btn" onclick="addTask()">Add Task</button>
+      
+      <!-- Task list -->
+      <ul id="taskList"></ul>
+      
+      <!-- Stopwatch Section -->
+      <div class="stopwatch-section">
+        <h3>Stopwatch</h3>
+        <div class="stopwatch" id="stopwatchDisplay">00:00:00</div>
+        <button class="stopwatch-btn" onclick="startStopwatch()">Start</button>
+        <button class="stopwatch-btn" onclick="stopStopwatch()">Stop</button>
+        <button class="stopwatch-btn" onclick="resetStopwatch()">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let stopwatchInterval;
+    let stopwatchSeconds = 0;
+
+    function startStopwatch() {
+      clearInterval(stopwatchInterval);
+      stopwatchInterval = setInterval(() => {
+        stopwatchSeconds++;
+        const hours = Math.floor(stopwatchSeconds / 3600);
+        const minutes = Math.floor((stopwatchSeconds % 3600) / 60);
+        const seconds = stopwatchSeconds % 60;
+        document.getElementById('stopwatchDisplay').innerText = 
+          ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')};
+      }, 1000);
+    }
+
+    function stopStopwatch() {
+      clearInterval(stopwatchInterval);
+    }
+
+    function resetStopwatch() {
+      clearInterval(stopwatchInterval);
+      stopwatchSeconds = 0;
+      document.getElementById('stopwatchDisplay').innerText = '00:00:00';
+    }
+
+    function addTask() {
+      const taskInput = document.getElementById('taskInput');
+      const taskTime = document.getElementById('taskTime').value;
+      const taskText = taskInput.value.trim();
+
+      if (taskText) {
+        const taskList = document.getElementById('taskList');
+        const li = document.createElement('li');
+
+        li.innerHTML = `
+          <input type="checkbox" class="checkbox" onclick="toggleComplete(this)">
+          <span class="task-text">${taskText} <span style="font-size: 12px; color: #888;">(${taskTime})</span></span>
+          <button class="delete-btn" onclick="deleteTask(this)">❌</button>
+        `;
+
+        taskList.appendChild(li);
+        taskInput.value = '';
+        document.getElementById('taskTime').value = ''; // Clear time input
+      }
+    }
+
+    function toggleComplete(checkbox) {
+      const taskText = checkbox.nextElementSibling;
+      taskText.classList.toggle('completed');
+    }
+
+    function deleteTask(button) {
+      const li = button.parentElement;
+      li.remove();
+    }
+  </script>
+
+</body>
+</html>
